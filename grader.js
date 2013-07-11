@@ -28,6 +28,7 @@ var rest = require('restler');
 var sys = require('util');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
+var URL_DEFAULT = "http://www.macrumors.com";
 
 var callThis = function(result) {
 if (dat instanceof Error) {
@@ -45,6 +46,10 @@ var assertFileExists = function(infile) {
         process.exit(1); // http://nodejs.org/api/process.html#process_process_exit_code
     }
     return instr;
+};
+
+var assertURLExists = function(val) {
+    return val.toString();
 };
 
 var cheerioHtmlFile = function(htmlfile) {
@@ -76,20 +81,22 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-	.option('-u, --url <url>', 'url of html file')
+	.option('-u, --url <url>', 'url of html file', clone(assertURLExists), URL_DEFAULT)
         .parse(process.argv);
-if (program.url !=null){	
+    if (program.url){	
 	rest.get(program.url).on('complete', function(result) {	
-if (result instanceof Error) {		
-	sys.puts('Error: ' +result.message);		
-	this.retry(5000); 
-   }	    
-else{		
-	fs.writeFileSync('outfile.html', result);		
-	var checkJson=checkHtmlFile("outfile.html", program.checks);		
+	    fs.writeFileSync("myfile.html", result);
+	    var checkJson = checkHtmlFile("myfile.html", program.checks);
+	    var outJson = JSON.stringify(checkJson, null, 4);
+	    console.log(outJson);
+	});
+    }
+    else{		
+//	fs.writeFileSync("myfile.html", result);
+	var checkJson=checkHtmlFile(result, program.checks);		
 	var outJson=JSON.stringify(checkJson, null, 4);		
 	console.log(outJson);
-	}
-});	
-}}
+    }
+}
+
 

@@ -91,9 +91,8 @@ if(require.main == module) {
 	    console.log(outJson);
 	});
     }
-    else{		
-//	fs.writeFileSync("myfile.html", result);
-	var checkJson=checkHtmlFile(result, program.checks);		
+    else{	
+	var checkJson=checkHtmlFile(program.file, program.checks);		
 	var outJson=JSON.stringify(checkJson, null, 4);		
 	console.log(outJson);
     }

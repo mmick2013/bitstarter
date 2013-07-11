@@ -28,7 +28,7 @@ var rest = require('restler');
 var sys = require('util');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
-var URL_DEFAULT = "http://www.macrumors.com";
+var URL_DEFAULT = "http://guarded-brushlands-8163.herokuapp.com";
 
 var callThis = function(result) {
 if (dat instanceof Error) {
